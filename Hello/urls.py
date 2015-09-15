@@ -1,7 +1,9 @@
 from django.conf.urls import patterns, url
-from Hello import views
+from Hello.views import *
+#from Hello import views
 
 urlpatterns = patterns('',
-    url(r'^$', views.index, name='index'),
-    url(r'^nice', views.nice, name='nice'),
+    url(r'^$', index, name='index'),
+    url(r'^nice', nice, name='nice'),
+    url(r'^home', home, name='home'),
 )
