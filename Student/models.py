@@ -10,3 +10,8 @@ class SignUp(models.Model):
 
     def __unicode__(self):   #python 3.4 is __str__
         return self.email
+
+
+class Student(models.Model):
+    matric_no = models.CharField(max_length=9)
+    name = models.CharField(max_length=40)

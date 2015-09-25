@@ -29,7 +29,7 @@ p {
 <p id="p01">This is a paragraph to show that I have understood some of the html5 features</p>
 
 <p id="p02"> This is another paragraph just for fun</p>
-<p>You can click <a href= "/hello">here</a> to return back!</p>
+<p>You can click <a href= "/student">here</a> to return back!</p>
 
 
 </body>
