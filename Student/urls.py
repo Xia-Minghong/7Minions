@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
-from Student import views
+from student import views
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
-    url(r'^nice', views.nice, name='nice'),
+    url(r'^signup/', views.signup, name='signup'),
     url(r'^home', views.home, name='home'),
 )
