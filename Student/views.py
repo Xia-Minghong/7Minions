@@ -1,12 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+import json
 # Create your views here.
 def index(request):
-    return HttpResponse("""
-    <h1>Hello world!</h1>
-    <p>Haha this is only for testing purpose!</p>
-    <p>You can click <a href= "/hello/nice">here</a> to see more!</p>
-    """)
+    return HttpResponse(["y",2])
 
 def nice(request):
     return HttpResponse("""
