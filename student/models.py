@@ -4,12 +4,13 @@ from django.db import models
 class Student(models.Model):
     matric_no = models.CharField(max_length=9)
     name = models.CharField(max_length=40)
-    friends = models.ManyToManyField('self', through='Friendship',
-                                           symmetrical=False,
-                                           related_name='related_to')
+    friends = models.ManyToManyField('self', through='Friendship', symmetrical=False,
+                                           related_name='related_to'
+                                           )
 
-    # def __unicode__(self):
-    #    return 'Student: ' + self.name
+    def __str__(self):
+       return self.name + ' : ' + self.matric_no
+
 
 class Friendship(models.Model):
     from_student = models.ForeignKey(Student, related_name='from_student')
