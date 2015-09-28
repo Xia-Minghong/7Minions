@@ -5,8 +5,8 @@ from student.models import Student
 
 class Registration(models.Model):
 
-    student = models.ForeignKey(Student)
-    event = models.ForeignKey(Event)
+    student = models.ForeignKey(Student, related_name="student")
+    event = models.ForeignKey(Event, related_name="event")
 
     class Meta:
         unique_together = (("student", "event"),)
