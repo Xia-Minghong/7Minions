@@ -4,6 +4,10 @@ from django.db import models
 class Student(models.Model):
     matric_no = models.CharField(max_length=9)
     name = models.CharField(max_length=40)
+    email = models.CharField(max_length=20)
+    #preference = models.
+    password = models.CharField(max_length=20)
+
     friends = models.ManyToManyField('self', through='Friendship', symmetrical=False,
                                            related_name='related_to'
                                            )
