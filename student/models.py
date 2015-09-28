@@ -12,11 +12,11 @@ class Student(models.Model):
 
     matric_no = models.CharField(max_length=9, unique=True)
 
-    email = models.CharField(max_length=100, unique=True)
+    email = models.EmailField(max_length=100, unique=True)
     #preference = models.
 
     friends = models.ManyToManyField('self', through='Friendship', symmetrical=False,
-                                           related_name='related_to'
+                                           related_name='related_to+'
                                            )
 
     def __str__(self):
