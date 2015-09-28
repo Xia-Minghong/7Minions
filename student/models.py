@@ -2,9 +2,9 @@ from django.db import models
 
 # Create your models here.
 class Student(models.Model):
-    matric_no = models.CharField(max_length=9)
+    matric_no = models.CharField(max_length=9, unique=True)
     name = models.CharField(max_length=40)
-    email = models.CharField(max_length=20)
+    email = models.CharField(max_length=20, unique=True)
     #preference = models.
     password = models.CharField(max_length=20)
 
