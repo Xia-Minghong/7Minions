@@ -37,7 +37,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'event'
+    'feedback'
+    'organizer'
+    'registration'
     'student'
+    'tag'
 )
 
 MIDDLEWARE_CLASSES = (
