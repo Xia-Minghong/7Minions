@@ -23,8 +23,32 @@ class Student(models.Model):
        return self.name + ' : ' + self.matric_no
 
 
+    def add_friendship(self, friend, symm=True):
+        relationship, created = Friendship.objects.get_or_create(
+            from_student=self,
+            to_student= friend)
+        if symm:
+            # avoid recursion by passing `symm=False`
+            friend.add_relationship(self, False)
+        return relationship
+
+    def remove_relationship(self, person, symm=True):
+        Friendship.objects.filter(
+            from_student=self,
+            to_student=person).delete()
+        if symm:
+            # avoid recursion by passing `symm=False`
+            person.remove_relationship(self, False)
+
+    def get_friendships(self, status):
+        return self.relationships.filter(
+            to_students__from_student=self)
+
+
 class Friendship(models.Model):
-    from_student = models.ForeignKey(Student, related_name='from_student')
-    to_student = models.ForeignKey(Student, related_name='to_student')
-    # status = models.IntegerField(choices=RELATIONSHIP_STATUSES)
+    from_student = models.ForeignKey(Student, related_name='from_students')
+    to_student = models.ForeignKey(Student, related_name='to_students')
+
+    class Mata:
+        unique_together = ('from_student', 'to_student')
 

@@ -28,6 +28,10 @@ class StudentViewSet(viewsets.ModelViewSet):
     def another(self, request):
         return Response("1")
 
+    # http://127.0.0.1:8000/student/addfriend/
+    @list_route(methods=['get'])    # can be post as well
+    def addfriend(self, request):
+        return Response("1")
 
     # def signup(request, matric_no, name):
     #     new_student = Student(matric_no=matric_no, name=name)
