@@ -4,7 +4,7 @@ from .serializers import *
 import json
 
 from rest_framework.decorators import list_route, detail_route
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 
@@ -17,14 +17,14 @@ class StudentViewSet(viewsets.ModelViewSet):
     # provided: [GET].list(), [GET].retrieve(), [POST].create(), [PUT].update(), and [DELETE].destroy()
 
 
-    # http://127.0.0.1:8000/student/2/some_action/
+    # POST http://127.0.0.1:8000/student/3/some_action/
     @detail_route(methods=['post'])
     def some_action(self, request, pk=None):
 
         return Response(pk)
 
-    # http://127.0.0.1:8000/student/another/
-    @list_route(methods=['get'])    # can be post as well
+    # POST http://127.0.0.1:8000/student/another/
+    @list_route(methods=['post'], permission_classes=[permissions.AllowAny])    # anybody is alloed
     def another(self, request):
         return Response("1")
 
