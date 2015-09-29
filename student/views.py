@@ -7,7 +7,8 @@ from rest_framework.decorators import list_route, detail_route
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
-
+from ems.serializers import *
+from .models import Student
 
 # Create your views here.
 class StudentViewSet(viewsets.ModelViewSet):
@@ -15,6 +16,30 @@ class StudentViewSet(viewsets.ModelViewSet):
     serializer_class = StudentSerializer
 
     # provided: [GET].list(), [GET].retrieve(), [POST].create(), [PUT].update(), and [DELETE].destroy()
+
+    # Registration (override .create())
+    @list_route(methods=['post'], permission_classes=[permissions.AllowAny])
+    def signup(self, request, *args, **kwargs):
+        serialized = UserSerializer(data=request.data)
+        if(serialized.is_valid()):
+            user = User.objects.create_user(
+                serialized.initial_data["username"],
+                "",
+                serialized.initial_data["password"],
+            )
+
+            student = Student(
+                user=user,
+                department=serialized.initial_data["department"],
+                name=serialized.initial_data["name"],
+                matric_no=serialized.initial_data["matric_no"],
+            )
+
+            student.save()
+            student_serialized = StudentSerializer(instance=student)
+            return Response(student_serialized.data)
+        else:
+            return Response(serialized._errors)
 
 
     # POST http://127.0.0.1:8000/student/3/some_action/
