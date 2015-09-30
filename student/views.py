@@ -52,10 +52,25 @@ class StudentViewSet(viewsets.ModelViewSet):
     def another(self, request):
         return Response("1")
 
-    # http://127.0.0.1:8000/student/addfriend/
-    @list_route(methods=['get'])    # can be post as well
-    def addfriend(self, request):
-        return Response("1")
+    # http://127.0.0.1:8000/students/3/addfriend/
+    @detail_route(methods=['post'])    # can be post as well
+    def addfriend(self, request, *args, **kwargs):
+        friend = User.objects.get(id = kwargs["pk"])
+        request.user.student.add_friendship(friend.student)
+        return Response(friend.username)
+
+    # http://127.0.0.1:8000/students/3/removefriend/
+    @detail_route(methods=['post'])    # can be post as well
+    def removefriend(self, request, *args, **kwargs):
+        friend = User.objects.get(id = kwargs["pk"])
+        request.user.student.remove_friendship(friend.student)
+        return Response(friend.username)
+
+    # http://127.0.0.1:8000/students/12/
+    @detail_route(methods=['get'])    # can be post as well
+    def retrieve(self, request, *args, **kwargs):
+        user = User.objects.get(id = kwargs["pk"])
+        return Response(user.username)
 
     # def signup(request, matric_no, name):
     #     new_student = Student(matric_no=matric_no, name=name)

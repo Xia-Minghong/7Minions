@@ -25,24 +25,24 @@ class Student(models.Model):
         Student.objects.get_or_create(department=request.data["department"], name="name")
 
     def add_friendship(self, friend, symm=True):
-        relationship, created = Friendship.objects.get_or_create(
-            from_student=self,
+        friendship, created = Friendship.objects.get_or_create(
+            from_student= self,
             to_student= friend)
         if symm:
             # avoid recursion by passing `symm=False`
-            friend.add_relationship(self, False)
-        return relationship
+            friend.add_friendship(self, False)
+        return friendship
 
-    def remove_relationship(self, person, symm=True):
+    def remove_friendship(self, person, symm=True):
         Friendship.objects.filter(
             from_student=self,
             to_student=person).delete()
         if symm:
             # avoid recursion by passing `symm=False`
-            person.remove_relationship(self, False)
+            person.remove_friendship(self, False)
 
     def get_friendships(self, status):
-        return self.relationships.filter(
+        return self.friendships.filter(
             to_students__from_student=self)
 
 
