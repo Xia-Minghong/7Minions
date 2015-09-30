@@ -35,7 +35,6 @@ class StudentViewSet(viewsets.ModelViewSet):
                 name=serialized.initial_data["name"],
                 matric_no=serialized.initial_data["matric_no"],
             )
-
             student.save()
             student_serialized = StudentSerializer(instance=student)
             return Response(student_serialized.data)
@@ -46,8 +45,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     # POST http://127.0.0.1:8000/student/3/some_action/
     @detail_route(methods=['post'])
     def some_action(self, request, pk=None):
-
-        return Response(pk)
+        return Response(request.user.id)
 
     # POST http://127.0.0.1:8000/student/another/
     @list_route(methods=['post'], permission_classes=[permissions.AllowAny])    # anybody is alloed
