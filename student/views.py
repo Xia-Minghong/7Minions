@@ -4,10 +4,11 @@ from .serializers import *
 import json
 
 from rest_framework.decorators import list_route, detail_route
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
-
+from ems.serializers import *
+from .models import Student
 
 # Create your views here.
 class StudentViewSet(viewsets.ModelViewSet):
@@ -16,33 +17,42 @@ class StudentViewSet(viewsets.ModelViewSet):
 
     # provided: [GET].list(), [GET].retrieve(), [POST].create(), [PUT].update(), and [DELETE].destroy()
 
+    # Registration (override .create())
+    @list_route(methods=['post'], permission_classes=[permissions.AllowAny])
+    def signup(self, request, *args, **kwargs):
 
-    # http://127.0.0.1:8000/student/2/some_action/
+        serialized = UserSerializer(data=request.data)
+        if(serialized.is_valid()):
+            user = User.objects.create_user(
+                serialized.initial_data["username"],
+                "",
+                serialized.initial_data["password"],
+            )
+
+            student = Student(
+                user=user,
+                department=serialized.initial_data["department"],
+                name=serialized.initial_data["name"],
+                matric_no=serialized.initial_data["matric_no"],
+            )
+
+            student.save()
+            student_serialized = StudentSerializer(instance=student)
+            return Response(student_serialized.data)
+        else:
+            return Response(serialized._errors)
+
+
+    # POST http://127.0.0.1:8000/student/3/some_action/
     @detail_route(methods=['post'])
     def some_action(self, request, pk=None):
 
         return Response(pk)
 
-    # # http://127.0.0.1:8000/student/2/update/
-    # @detail_route(methods=['put'])
-    # def update(self, request, pk):
-    #     return Response(pk)
-
-    # http://127.0.0.1:8000/student/another/
-    @list_route(methods=['get'])    # can be post as well
+    # POST http://127.0.0.1:8000/student/another/
+    @list_route(methods=['post'], permission_classes=[permissions.AllowAny])    # anybody is alloed
     def another(self, request):
         return Response("1")
-
-    # # http://127.0.0.1:8000/student/signup/
-    # @list_route(methods=['post'])    # can be post as well
-    # def signup(self, request):
-    #     StudentSerializer
-    #     return Response(request.data["name"])
-# serializer = SnippetSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # http://127.0.0.1:8000/student/addfriend/
     @list_route(methods=['get'])    # can be post as well
