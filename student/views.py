@@ -7,7 +7,7 @@ from rest_framework.decorators import list_route, detail_route
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
-from ems.serializers import *
+from EMS.serializers import *
 from .models import Student
 
 # Create your views here.

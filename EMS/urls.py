@@ -16,34 +16,13 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf.urls import url, include
-
 from rest_framework import routers, serializers, viewsets, permissions
-from oauth2_provider.ext.rest_framework import TokenHasReadWriteScope, TokenHasScope
-from django.contrib.auth.models import User, Group
-from student.views import *
+
+from .serializers import *
+from .views import *
+from student.views import StudentViewSet
 
 admin.autodiscover()
-# Serializers define the API representation.
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ('url', 'username', 'email', 'is_staff')
-
-# ViewSets define the view behavior.
-class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-class GroupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Group
-
-class GroupViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated, TokenHasScope]
-    required_scopes = ['groups']
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
 
 
 # Routers provide an easy way of automatically determining the URL conf.

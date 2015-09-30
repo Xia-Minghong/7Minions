@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import Student
-from ems.serializers import *
+from EMS.serializers import *
 
 class StudentSerializer(serializers.ModelSerializer):
 
