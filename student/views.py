@@ -23,10 +23,26 @@ class StudentViewSet(viewsets.ModelViewSet):
 
         return Response(pk)
 
+    # # http://127.0.0.1:8000/student/2/update/
+    # @detail_route(methods=['put'])
+    # def update(self, request, pk):
+    #     return Response(pk)
+
     # http://127.0.0.1:8000/student/another/
     @list_route(methods=['get'])    # can be post as well
     def another(self, request):
         return Response("1")
+
+    # # http://127.0.0.1:8000/student/signup/
+    # @list_route(methods=['post'])    # can be post as well
+    # def signup(self, request):
+    #     StudentSerializer
+    #     return Response(request.data["name"])
+# serializer = SnippetSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # http://127.0.0.1:8000/student/addfriend/
     @list_route(methods=['get'])    # can be post as well

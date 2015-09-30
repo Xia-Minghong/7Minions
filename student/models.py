@@ -22,6 +22,8 @@ class Student(models.Model):
     def __str__(self):
        return self.name + ' : ' + self.matric_no
 
+    def signup(self, request):
+        Student.objects.get_or_create(department=request.data["department"], name="name")
 
     def add_friendship(self, friend, symm=True):
         relationship, created = Friendship.objects.get_or_create(
