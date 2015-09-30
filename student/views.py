@@ -20,6 +20,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     # Registration (override .create())
     @list_route(methods=['post'], permission_classes=[permissions.AllowAny])
     def signup(self, request, *args, **kwargs):
+
         serialized = UserSerializer(data=request.data)
         if(serialized.is_valid()):
             user = User.objects.create_user(
