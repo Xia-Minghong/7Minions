@@ -8,7 +8,9 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from EMS.serializers import *
+from .serializers import StudentSerializer
 from .models import Student
+
 
 # Create your views here.
 class StudentViewSet(viewsets.ModelViewSet):
@@ -52,6 +54,12 @@ class StudentViewSet(viewsets.ModelViewSet):
     def another(self, request):
         return Response("1")
 
+    # GET http://127.0.0.1:8000/students/me/
+    @list_route(methods=['get'])    # anybody is alloed
+    def me(self, request):
+        user = request.user
+        return Response('{"id" : "' + str(user.id) + '", "department" : "' + user.student.department +  '", "name": "' + user.student.name + '", "matric_no" : "' + str(user.student.matric_no) + '"}')#Response(StudentSerializer.serialize('json', request.user, indent=2,))
+
     # http://127.0.0.1:8000/students/3/addfriend/
     @detail_route(methods=['post'])    # can be post as well
     def addfriend(self, request, *args, **kwargs):
@@ -70,7 +78,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['get'])    # can be post as well
     def retrieve(self, request, *args, **kwargs):
         user = User.objects.get(id = kwargs["pk"])
-        return Response(user.username)
+        return Response('{"id" : "' + str(user.id) + '", "department" : "' + user.student.department +  '", "name": "' + user.student.name + '", "matric_no" : "' + str(user.student.matric_no) + '"}')
 
     # def signup(request, matric_no, name):
     #     new_student = Student(matric_no=matric_no, name=name)
