@@ -21,6 +21,8 @@ from rest_framework import routers, serializers, viewsets, permissions
 from .serializers import *
 from .views import *
 from student.views import StudentViewSet
+from tag.views import TagViewSet
+from event.views import EventViewSet
 
 admin.autodiscover()
 
@@ -30,6 +32,8 @@ router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'groups', GroupViewSet)
 router.register(r'students', StudentViewSet)
+router.register(r'tags', TagViewSet)
+router.register(r'events', EventViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

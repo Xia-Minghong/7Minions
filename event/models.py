@@ -8,6 +8,8 @@ class Event(models.Model):
     end_time = models.DateTimeField()
     location = models.CharField(max_length=40)
     description = models.CharField(max_length=200)
-    #tag =
     organizer = models.ForeignKey(Organizer)
     likes = models.IntegerField()
+
+    def __str__(self):
+       return self.name + ' : ' + self.location
