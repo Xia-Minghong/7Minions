@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
 from .models import Tag
-from .se
+from .serializers import TagSerializer
 # Create your views here.
-class StudentViewSet(viewsets.ModelViewSet):
+class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
