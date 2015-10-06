@@ -23,6 +23,7 @@ from .views import *
 from student.views import StudentViewSet
 from tag.views import TagViewSet
 from event.views import EventViewSet
+from organizer.views import OrganizerViewSet
 
 admin.autodiscover()
 
@@ -34,6 +35,8 @@ router.register(r'groups', GroupViewSet)
 router.register(r'students', StudentViewSet)
 router.register(r'tags', TagViewSet)
 router.register(r'events', EventViewSet)
+router.register(r'organizers', OrganizerViewSet)
+
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

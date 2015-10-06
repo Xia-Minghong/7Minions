@@ -5,8 +5,11 @@ from event.models import Event
 
 class Tag(models.Model):
 
-    tag = models.CharField(max_length=40)
     event = models.ForeignKey(Event)
+    tag = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.event + ' : ' + self.tag
 
     class Meta:
-        unique_together = (("tag", "event"),)
+        unique_together = (("event", "tag"),)

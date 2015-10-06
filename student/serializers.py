@@ -9,4 +9,4 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         user = UserSerializer
         # url is optional
-        fields = ('user', 'department', 'name', 'matric_no')
+        fields = ('user', 'department', 'name', 'matric_no', "img_url")

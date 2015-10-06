@@ -12,6 +12,8 @@ class Student(models.Model):
 
     matric_no = models.CharField(max_length=9, unique=True)
 
+    img_url = models.CharField(max_length=100)
+
     #preference = models.
 
     friends = models.ManyToManyField('self', through='Friendship', symmetrical=False,

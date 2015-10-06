@@ -10,6 +10,7 @@ class Event(models.Model):
     description = models.CharField(max_length=200)
     organizer = models.ForeignKey(Organizer)
     likes = models.IntegerField()
+    img_url = models.CharField(max_length=100, default="", null=True)
 
     def __str__(self):
        return self.name + ' : ' + self.location
