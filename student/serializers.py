@@ -10,3 +10,4 @@ class StudentSerializer(serializers.ModelSerializer):
         user = UserSerializer
         # url is optional
         fields = ('user', 'department', 'name', 'matric_no', "img_url")
+        depth = 1
