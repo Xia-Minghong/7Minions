@@ -84,7 +84,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     # def signup(request, matric_no, name):
     #     new_student = Student(matric_no=matric_no, name=name)
     #     new_student.save()
-    #     return HttpResponse(json.dumps(serializers.serialize("json", [new_student])), content_type="application/json")
+    #     return HttpResponse(json.dumps(serializers.py.serialize("json", [new_student])), content_type="application/json")
     #
     # def login(request):
     #     return HttpResponse(0)
