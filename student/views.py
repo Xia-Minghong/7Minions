@@ -11,7 +11,6 @@ from EMS.serializers import *
 from .serializers import StudentSerializer
 from .models import Student
 
-
 # Create your views here.
 class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
@@ -57,8 +56,9 @@ class StudentViewSet(viewsets.ModelViewSet):
     # GET http://127.0.0.1:8000/students/me/
     @list_route(methods=['get'])    # anybody is alloed
     def me(self, request):
-        user = request.user
-        return Response('{"id" : "' + str(user.id) + '", "department" : "' + user.student.department +  '", "name": "' + user.student.name + '", "matric_no" : "' + str(user.student.matric_no) + '"}')#Response(StudentSerializer.serialize('json', request.user, indent=2,))
+        student = request.user.student
+        serializer = StudentSerializer(student)
+        return Response(serializer.data, content_type="application/json")
 
     # http://127.0.0.1:8000/students/3/addfriend/
     @detail_route(methods=['post'])    # can be post as well
@@ -77,8 +77,9 @@ class StudentViewSet(viewsets.ModelViewSet):
     # http://127.0.0.1:8000/students/12/
     @detail_route(methods=['get'])    # can be post as well
     def retrieve(self, request, *args, **kwargs):
-        user = User.objects.get(id = kwargs["pk"])
-        return Response('{"id" : "' + str(user.id) + '", "department" : "' + user.student.department +  '", "name": "' + user.student.name + '", "matric_no" : "' + str(user.student.matric_no) + '"}')
+        student = User.objects.get(id = kwargs["pk"]).student
+        serializer = StudentSerializer(student)
+        return Response(serializer.data, content_type="application/json")
 
     # def signup(request, matric_no, name):
     #     new_student = Student(matric_no=matric_no, name=name)
