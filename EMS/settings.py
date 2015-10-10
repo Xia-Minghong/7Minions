@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'event',
     'feedback',
     'organizer',
-    'registration',
+    #'registration',
     'student',
     'tag',
 )

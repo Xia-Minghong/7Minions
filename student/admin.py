@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Student, Friendship
+from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 
@@ -12,6 +12,12 @@ class FriendshipInline(admin.TabularInline):        #(admin.StackedInline):
 class FriendshipAdmin(admin.ModelAdmin):
     list_display = ('from_student', 'to_student')
 
+class RegistrationInline(admin.TabularInline):        #(admin.StackedInline):
+    model = Registration
+    fk_name = 'student'
+
+class RegistrationAdmin(admin.ModelAdmin):
+    list_display = ('student', 'event')
 
 # class UserInline(admin.StackedInline):
 #     model = User
@@ -41,3 +47,4 @@ class UserAdmin(UserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Friendship, FriendshipAdmin)
+admin.site.register(Registration, RegistrationAdmin)
