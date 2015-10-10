@@ -16,6 +16,6 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     # http://127.0.0.1:8000/feedbacks/1/get_feedbacks
     @detail_route(methods=['get'])
     def get_feedbacks(self, request, **kwargs):
-        feedback_list = Feedback.objects.filter(tag = kwargs['pk'])
+        feedback_list = Feedback.objects.filter(event = kwargs['pk'])
         serializer = FeedbackSerializer(feedback_list, many=True)
         return Response(serializer.data, content_type="application/json")

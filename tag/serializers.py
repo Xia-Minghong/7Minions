@@ -8,11 +8,3 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = ('tag', 'event')
         depth = 1
-        # list_serializer_class = TagListSerializer
-
-
-#
-# class TagListSerializer(serializers.ListSerializer):
-#     def create(self, validated_data):
-#         tags = [Tag(**item) for item in validated_data]
-#         return Tag.objects.bulk_create(tags)
