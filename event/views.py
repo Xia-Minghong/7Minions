@@ -21,7 +21,10 @@ class EventViewSet(viewsets.ModelViewSet):
 # Create an event
 # POST:  http://127.0.0.1:8000/events/
 # {
-#     "name": 2,
-#     "content": "haihui",
-#     "rating": 4
+#     "name": "UBS Career Talk",
+#     "start_time": "18:30:00",
+#     "end_time": "22:00:00",
+#     "location": "TCT LT"
+#     "description": "Gain first-hand understanding of what it's like to work in UBS."
+# "organizer": "Career"
 # }
