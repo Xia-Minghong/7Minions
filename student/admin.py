@@ -31,6 +31,7 @@ class StudentInline(admin.StackedInline):
     fk_name = 'user'
 
 class UserAdmin(UserAdmin):
+    list_display = ('id', 'username', 'email', 'is_staff', 'student')
     inlines = [StudentInline]
 
 

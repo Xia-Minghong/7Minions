@@ -7,4 +7,4 @@ class OrganizerAdmin(admin.ModelAdmin):
 
 
 # Register your models here.
-admin.site.register(Organizer)
+admin.site.register(Organizer, OrganizerAdmin)

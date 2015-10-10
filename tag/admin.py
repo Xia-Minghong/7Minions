@@ -7,4 +7,4 @@ class TagAdmin(admin.ModelAdmin):
 
 
 # Register your models here.
-admin.site.register(Tag)
+admin.site.register(Tag, TagAdmin)
