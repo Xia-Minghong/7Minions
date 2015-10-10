@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from tag.serializers import TagSerializer
+
 from .models import Event
 from organizer.serializers import OrganizerSerializer
 

@@ -34,6 +34,7 @@ class EventViewSet(viewsets.ModelViewSet):
     # "img_url": "http://goo.gl/TPdCQE",
     # "organizer": 3
     # }
+
     def create(self, request, *args, **kwargs):
         serialized = EventSerializer(data=request.data)
         if(serialized.is_valid()):
