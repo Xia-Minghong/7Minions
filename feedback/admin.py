@@ -4,7 +4,7 @@ from .models import Feedback
 
 
 class FeedbackAdmin(admin.ModelAdmin):
-    list_display = ('content', 'rating')
+    list_display = ('id', 'content', 'rating')
 
 
 # Register your models here.
