@@ -19,3 +19,12 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         feedback_list = Feedback.objects.filter(event = kwargs['pk'])
         serializer = FeedbackSerializer(feedback_list, many=True)
         return Response(serializer.data, content_type="application/json")
+
+
+# Create feedback
+# POST:  http://127.0.0.1:8000/feedbacks/
+# {
+#     "event": 2,
+#     "content": "haihui",
+#     "rating": 4
+# }
