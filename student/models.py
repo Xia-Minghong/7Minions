@@ -22,6 +22,8 @@ class Student(models.Model):
                                            )
     registrations = models.ManyToManyField('self', through='Registration', symmetrical=False, related_name='registered+')
 
+    bookmarks = models.ManyToManyField('self', )
+
     def __str__(self):
        return self.name + ' : ' + self.matric_no
 
@@ -64,3 +66,5 @@ class Registration(models.Model):
 
     class Mata:
         unique_together = ('student', 'event')
+
+

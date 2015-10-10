@@ -7,4 +7,3 @@ class FeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feedback
         fields = ('event', 'content', 'rating')
-        depth = 1
