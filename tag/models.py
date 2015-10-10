@@ -15,4 +15,3 @@ class Tag(models.Model):
 
     class Meta:
         unique_together = (("event", "tag"),)
-

@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 from rest_framework.decorators import list_route, detail_route
 from rest_framework import viewsets, permissions
-from .models import Tag, tags
+from .models import Tag, tags, Event
 from .serializers import TagSerializer
 from rest_framework.response import Response
 # Create your views here.
@@ -19,3 +19,18 @@ class TagViewSet(viewsets.ModelViewSet):
         event_list = Tag.objects.filter(tag = kwargs['pk'])
         serializer = TagSerializer(event_list, many=True)
         return Response(serializer.data, content_type="application/json")
+
+
+    def create(self, request, *args, **kwargs):
+        serialized = TagSerializer(data=request.data)
+        if(serialized.is_valid()):
+            event= Event.objects.get(id=serialized.initial_data["event"])
+            tag = Tag(
+                    event = event,
+                    tag=serialized.initial_data["tag"],
+
+                )
+            tag.save()
+            return Response(request.data, content_type="application/json")
+        else:
+            return Response(serialized._errors)
