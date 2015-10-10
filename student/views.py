@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from EMS.serializers import *
 from .serializers import StudentSerializer
+from event.serializers import EventSerializer
 from .models import Student
 
 # Create your views here.
@@ -81,10 +82,13 @@ class StudentViewSet(viewsets.ModelViewSet):
         serializer = StudentSerializer(student)
         return Response(serializer.data, content_type="application/json")
 
-    # def signup(request, matric_no, name):
-    #     new_student = Student(matric_no=matric_no, name=name)
-    #     new_student.save()
-    #     return HttpResponse(json.dumps(serializers.py.serialize("json", [new_student])), content_type="application/json")
-    #
-    # def login(request):
-    #     return HttpResponse(0)
+    # http://127.0.0.1:8000/students/3/register_event/
+    @detail_route(methods=['post'])    # can be post as well
+    def register_event(self, request, **kwargs):
+        student = request.user.student
+        event = Event.objects.get(id = kwargs["pk"])
+        registration, registered = Registration.objects.get_or_create(
+            event= event,
+            student= student)
+        serializer = EventSerializer(event)
+        return Response(serializer.data)
