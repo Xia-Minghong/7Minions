@@ -7,6 +7,7 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ('tag', 'event')
+        depth = 1
         # list_serializer_class = TagListSerializer
 
 
