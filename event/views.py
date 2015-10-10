@@ -24,7 +24,9 @@ class EventViewSet(viewsets.ModelViewSet):
 #     "name": "UBS Career Talk",
 #     "start_time": "18:30:00",
 #     "end_time": "22:00:00",
-#     "location": "TCT LT"
-#     "description": "Gain first-hand understanding of what it's like to work in UBS."
-# "organizer": "Career"
+#     "location": "TCT LT",
+#     "description": "Gain first-hand understanding of what it's like to work in UBS.",
+#     "organizer": 3,
+#     "likes": 10,
+#     "img_url": "http://goo.gl/TPdCQE"
 # }
