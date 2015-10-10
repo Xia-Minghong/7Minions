@@ -17,6 +17,5 @@ class TagViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['get'])
     def get_events(self, request, **kwargs):
         event_list = Tag.objects.filter(tag = kwargs['pk'])
-        serializer = TagSerializer(event_list,many=True)
-
+        serializer = TagSerializer(event_list, many=True)
         return Response(serializer.data, content_type="application/json")
