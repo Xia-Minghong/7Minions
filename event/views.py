@@ -11,7 +11,7 @@ class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
     
     @detail_route(methods=['put', 'get'], permission_classes=[permissions.IsAuthenticated])
-    def likes(self, request, pk = None):
+    def like(self, request, pk = None):
         event = get_object_or_404(Event.objects.all(), pk = pk)
         if request.method == 'PUT':
             event.likes += 1
