@@ -13,8 +13,9 @@ class TagViewSet(viewsets.ModelViewSet):
 
     # provided: [GET].list(), [GET].retrieve(), [POST].create(), [PUT].update(), and [DELETE].destroy()
 
+    # http://127.0.0.1:8000/tags/career/get_events
     @detail_route(methods=['get'])
-    def getevents(self, request, **kwargs):
+    def get_events(self, request, **kwargs):
         event_list = Tag.objects.filter(tag = kwargs['pk'])
         serializer = TagSerializer(event_list,many=True)
 
