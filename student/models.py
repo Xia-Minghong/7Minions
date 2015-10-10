@@ -12,7 +12,7 @@ class Student(models.Model):
 
     matric_no = models.CharField(max_length=9, unique=True)
 
-    img_url = models.CharField(max_length=100, null=True, default="")
+    img_url = models.CharField(max_length=200, null=True, default="")
 
     #preference = models.
 
