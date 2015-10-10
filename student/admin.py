@@ -19,6 +19,14 @@ class RegistrationInline(admin.TabularInline):        #(admin.StackedInline):
 class RegistrationAdmin(admin.ModelAdmin):
     list_display = ('student', 'event')
 
+
+class BookmarkInline(admin.TabularInline):        #(admin.StackedInline):
+    model = Bookmark
+    fk_name = 'student'
+
+class BookmarkAdmin(admin.ModelAdmin):
+    list_display = ('student', 'event')
+
 # class UserInline(admin.StackedInline):
 #     model = User
 #     fk_name = 'student'
@@ -48,3 +56,4 @@ admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Friendship, FriendshipAdmin)
 admin.site.register(Registration, RegistrationAdmin)
+admin.site.register(Bookmark, BookmarkAdmin)

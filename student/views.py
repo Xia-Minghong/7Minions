@@ -92,3 +92,55 @@ class StudentViewSet(viewsets.ModelViewSet):
             student= student)
         serializer = EventSerializer(event)
         return Response(serializer.data)
+
+    # http://127.0.0.1:8000/students/3/attend_event/
+    @detail_route(methods=['put'])
+    def attend_event(self, request, **kwargs):
+        student = request.user.student
+        event = Event.objects.get(id = kwargs["pk"])
+        registration = Registration.objects.filter(
+            event= event,
+            student= student)
+        #registration.attended = True
+        registration.update(attended=True)
+        serializer = EventSerializer(event)
+        return Response(serializer.data)
+
+    # http://127.0.0.1:8000/students/3/deregister_event/
+    @detail_route(methods=['delete'])
+    def deregister_event(self, request, **kwargs):
+        student = request.user.student
+        event = Event.objects.get(id = kwargs["pk"])
+        deregistration= Registration.objects.get(
+            event= event,
+            student= student)
+        deregistration.delete()
+        serializer = EventSerializer(event)
+        return Response(serializer.data)
+
+    # http://127.0.0.1:8000/students/3/bookmark/
+    @detail_route(methods=['post'])
+    def bookmark(self, request, **kwargs):
+        student = request.user.student
+        event = Event.objects.get(id = kwargs["pk"])
+        bookmark, bookmarked = Bookmark.objects.get_or_create(
+            event= event,
+            student= student)
+        serializer = EventSerializer(event)
+        return Response(serializer.data)
+
+    # # http://127.0.0.1:8000/students/bookmark/
+    # @list_route(methods=['get'])
+    # def bookmark(self, request, **kwargs):
+    #     #student = request.user.student
+    #     #serializer = EventSerializer(student.bookmarks.all(), many=True)
+    #     return Response()#serializer.data)
+    #
+    # # http://127.0.0.1:8000/students/3/bookmark/
+    # @detail_route(methods=['delete'])
+    # def bookmark(self, request, **kwargs):
+    #     student = request.user.student
+    #     event = Event.objects.get(id = kwargs["pk"])
+    #     student.bookmarks.remove(event)
+    #     serializer = EventSerializer(event)
+    #     return Response(serializer.data)

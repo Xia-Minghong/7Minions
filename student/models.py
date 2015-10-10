@@ -22,7 +22,7 @@ class Student(models.Model):
                                            )
     registrations = models.ManyToManyField('self', through='Registration', symmetrical=False, related_name='registered+')
 
-    bookmarks = models.ManyToManyField('self', )
+    bookmarks = models.ManyToManyField('self', through='Bookmark', symmetrical=False, related_name='bookmarked+')
 
     def __str__(self):
        return self.name + ' : ' + self.matric_no
@@ -60,9 +60,17 @@ class Friendship(models.Model):
         unique_together = ('from_student', 'to_student')
 
 class Registration(models.Model):
-    student = models.ForeignKey(Student, related_name='student')
-    event = models.ForeignKey(Event, related_name='event')
+    student = models.ForeignKey(Student, related_name='student_registration')
+    event = models.ForeignKey(Event, related_name='event_registration')
     attended = models.BooleanField(default=False)
+
+    class Mata:
+        unique_together = ('student', 'event')
+
+
+class Bookmark(models.Model):
+    student = models.ForeignKey(Student, related_name='student_bookmark')
+    event = models.ForeignKey(Event, related_name='event_bookmark')
 
     class Mata:
         unique_together = ('student', 'event')
