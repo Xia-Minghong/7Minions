@@ -4,6 +4,7 @@ from django.shortcuts import render
 from rest_framework.decorators import list_route, detail_route
 from rest_framework import viewsets, permissions
 from .models import Registration
+from .models import Event
 from .serializers import RegistrationSerializer
 from rest_framework.response import Response
 # Create your views here.
