@@ -144,7 +144,7 @@ class StudentViewSet(viewsets.ModelViewSet):
         serializer = EventSerializer(event)
         return Response(serializer.data)
 
-    # http://127.0.0.1:8000/students/3/bookmark/
+    # http://127.0.0.1:8000/students/3/bookmark_event/
     @detail_route(methods=['post'])
     def bookmark_event(self, request, **kwargs):
         student = request.user.student
@@ -158,7 +158,7 @@ class StudentViewSet(viewsets.ModelViewSet):
         else:
             return Response(bookmarked)
 
-    # http://127.0.0.1:8000/students/bookmark/
+    # http://127.0.0.1:8000/students/bookmarkmarked_events/
     @list_route(methods=['get'])
     def bookmarked_events(self, request, **kwargs):
         student = request.user.student
@@ -170,11 +170,14 @@ class StudentViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-    # # http://127.0.0.1:8000/students/3/bookmark/
-    # @detail_route(methods=['delete'])
-    # def bookmark(self, request, **kwargs):
-    #     student = request.user.student
-    #     event = Event.objects.get(id = kwargs["pk"])
-    #     student.bookmarks.remove(event)
-    #     serializer = EventSerializer(event)
-    #     return Response(serializer.data)
+    # http://127.0.0.1:8000/students/3/unbookmark_event/
+    @detail_route(methods=['delete'])
+    def unbookmark_event(self, request, **kwargs):
+        student = request.user.student
+        event = Event.objects.get(id = kwargs["pk"])
+        unbookmark= Bookmark.objects.get(
+            event= event,
+            student= student)
+        unbookmark.delete()
+        serializer = EventSerializer(event)
+        return Response(serializer.data)
