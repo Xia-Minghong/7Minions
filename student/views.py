@@ -2,6 +2,7 @@ from django.shortcuts import render
 from student.models import *
 from .serializers import *
 import json
+from rest_framework.renderers import JSONRenderer
 
 from rest_framework.decorators import list_route, detail_route
 from rest_framework import viewsets, permissions
@@ -11,6 +12,16 @@ from EMS.serializers import *
 from .serializers import StudentSerializer
 from event.serializers import EventSerializer
 from .models import Student
+
+
+def get_bookmarked_events(student):
+        # student = request.user.student
+        bookmarks = Bookmark.objects.filter(student=student)
+        events = []
+        for bookmark in bookmarks:
+            events.append(bookmark.event)
+        data = EventSerializer(events, many=True).data
+        return data
 
 # Create your views here.
 class StudentViewSet(viewsets.ModelViewSet):
@@ -44,22 +55,15 @@ class StudentViewSet(viewsets.ModelViewSet):
             return Response(serialized._errors)
 
 
-    # POST http://127.0.0.1:8000/student/3/some_action/
-    @detail_route(methods=['post'])
-    def some_action(self, request, pk=None):
-        return Response(request.user.id)
-
-    # POST http://127.0.0.1:8000/student/another/
-    @list_route(methods=['post'], permission_classes=[permissions.AllowAny])    # anybody is alloed
-    def another(self, request):
-        return Response("1")
-
     # GET http://127.0.0.1:8000/students/me/
     @list_route(methods=['get'])    # anybody is alloed
     def me(self, request):
         student = request.user.student
         serializer = StudentSerializer(student)
-        return Response(serializer.data, content_type="application/json")
+        data = serializer.data
+        event_data = get_bookmarked_events(student)
+        data["events"]=event_data
+        return Response(data, content_type="application/json")
 
     # http://127.0.0.1:8000/students/3/addfriend/
     @detail_route(methods=['post'])    # can be post as well
@@ -91,7 +95,10 @@ class StudentViewSet(viewsets.ModelViewSet):
             event= event,
             student= student)
         serializer = EventSerializer(event)
-        return Response(serializer.data)
+        if registered:
+            return Response(serializer.data)
+        else:
+            return Response(registered)
 
     # http://127.0.0.1:8000/students/3/attend_event/
     @detail_route(methods=['put'])
@@ -127,15 +134,23 @@ class StudentViewSet(viewsets.ModelViewSet):
             event= event,
             student= student)
         serializer = EventSerializer(event)
+        if bookmarked:
+            return Response(serializer.data)
+        else:
+            return Response(bookmarked)
+
+    # http://127.0.0.1:8000/students/bookmark/
+    @list_route(methods=['get'])
+    def bookmark(self, request, **kwargs):
+        student = request.user.student
+        bookmarks = Bookmark.objects.filter(student=student)
+        events = []
+        for bookmark in bookmarks:
+            events.append(bookmark.event)
+        serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
 
-    # # http://127.0.0.1:8000/students/bookmark/
-    # @list_route(methods=['get'])
-    # def bookmark(self, request, **kwargs):
-    #     #student = request.user.student
-    #     #serializer = EventSerializer(student.bookmarks.all(), many=True)
-    #     return Response()#serializer.data)
-    #
+
     # # http://127.0.0.1:8000/students/3/bookmark/
     # @detail_route(methods=['delete'])
     # def bookmark(self, request, **kwargs):
