@@ -10,9 +10,32 @@ from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
 class EventViewSet(viewsets.ModelViewSet):
-    queryset = Event.objects.all()
+    queryset = Event.objects.all().order_by('start_time')
     serializer_class = EventSerializer
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        queryset_list = list(queryset)
+        user = request.user.student
+        preference = ['community',  'concert', 'career']
+        resultset = []
+        for event in queryset_list:
+            if len(resultset) == 0:
+                resultset.insert(0, event)
+                continue
+            for item in resultset:
+                index = 0
+                if len(set(event.tag_set) & set(preference)) > len(set(item.tag_set) & set(preference)):
+                    resultset.insert(index, event)
+                index += 1
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        #serializer = self.get_serializer(queryset, many=True)
+        serializer = self.get_serializer(resultset, many=True)
+        return Response(serializer.data)
     # Like an event
     # GET  http://127.0.0.1:8000/events/12/like
     @detail_route(methods=['get'], permission_classes=[permissions.IsAuthenticated])

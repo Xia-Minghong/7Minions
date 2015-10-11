@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from event.models import Event
 
 # Create your models here.
+
 class Student(models.Model):
 
     user = models.OneToOneField(User)
@@ -15,6 +16,11 @@ class Student(models.Model):
 
     img_url = models.CharField(max_length=200, null=True, default="")
 
+    '''tags = (
+            ('sports', 'sports'), 
+            ('community', 'community'), 
+            ('concert', 'concert'),
+            ('career', 'career'), )'''
     #preference = models.
 
     friends = models.ManyToManyField('self', through='Friendship', symmetrical=False,
