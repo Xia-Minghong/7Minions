@@ -23,14 +23,16 @@ class TagViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         serialized = TagSerializer(data=request.data)
+        Response(request.data)
         if(serialized.is_valid()):
+            print(serialized.initial_data["event"])
+            print(serialized.initial_data["tag"])
             event= Event.objects.get(id=serialized.initial_data["event"])
-            tag = Tag(
+            new_tag = Tag(
                     event = event,
                     tag=serialized.initial_data["tag"],
-
                 )
-            tag.save()
+            new_tag.save()
             return Response(request.data, content_type="application/json")
         else:
             return Response(serialized._errors)
