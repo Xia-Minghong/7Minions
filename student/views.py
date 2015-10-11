@@ -15,12 +15,27 @@ from .models import Student
 
 
 def get_bookmarked_events(student):
-        # student = request.user.student
         bookmarks = Bookmark.objects.filter(student=student)
         events = []
         for bookmark in bookmarks:
             events.append(bookmark.event)
         data = EventSerializer(events, many=True).data
+        return data
+
+def get_registered_events(student):
+        registrations = Registration.objects.filter(student=student)
+        events = []
+        for registration in registrations:
+            events.append(registration.event)
+        data = EventSerializer(events, many=True).data
+        return data
+
+def get_friends(student):
+        friendships = Friendship.objects.filter(to_student=student)
+        friends = []
+        for friendship in friendships:
+            friends.append(friendship.to_student)
+        data = StudentSerializer(friends, many=True).data
         return data
 
 # Create your views here.
@@ -61,8 +76,12 @@ class StudentViewSet(viewsets.ModelViewSet):
         student = request.user.student
         serializer = StudentSerializer(student)
         data = serializer.data
-        event_data = get_bookmarked_events(student)
-        data["bookmarked_events"]=event_data
+        friends = get_friends(student)
+        bookmarked_event_data = get_bookmarked_events(student)
+        registered_event_data = get_registered_events(student)
+        data["friends"]=friends
+        data["bookmarked_events"]=bookmarked_event_data
+        data["registered_events"]=registered_event_data
         return Response(data, content_type="application/json")
 
     # http://127.0.0.1:8000/students/3/addfriend/
