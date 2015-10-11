@@ -62,7 +62,7 @@ class StudentViewSet(viewsets.ModelViewSet):
         serializer = StudentSerializer(student)
         data = serializer.data
         event_data = get_bookmarked_events(student)
-        data["events"]=event_data
+        data["bookmarked_events"]=event_data
         return Response(data, content_type="application/json")
 
     # http://127.0.0.1:8000/students/3/addfriend/
