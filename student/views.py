@@ -11,6 +11,7 @@ from EMS.serializers import *
 from .serializers import StudentSerializer
 from event.serializers import EventSerializer
 from .models import Student
+from rest_framework import status
 
 # Create your views here.
 class StudentViewSet(viewsets.ModelViewSet):
@@ -87,11 +88,13 @@ class StudentViewSet(viewsets.ModelViewSet):
     def register_event(self, request, **kwargs):
         student = request.user.student
         event = Event.objects.get(id = kwargs["pk"])
-        registration, registered = Registration.objects.get_or_create(
+        registration, not_registered = Registration.objects.get_or_create(
             event= event,
             student= student)
-        serializer = EventSerializer(event)
-        return Response(serializer.data)
+        if not not_registered:
+            return Response(status = status.HTTP_400_BAD_REQUEST)
+        serializer = EventSerializer(registration)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     # http://127.0.0.1:8000/students/3/attend_event/
     @detail_route(methods=['put'])
