@@ -91,11 +91,7 @@ class StudentViewSet(viewsets.ModelViewSet):
             event= event,
             student= student)
         serializer = EventSerializer(event)
-        if registered:
-            return Response(serializer.data)
-        else:
-            return Response(registered)
-
+        return Response(serializer.data)
 
     # http://127.0.0.1:8000/students/3/attend_event/
     @detail_route(methods=['put'])
@@ -105,6 +101,7 @@ class StudentViewSet(viewsets.ModelViewSet):
         registration = Registration.objects.filter(
             event= event,
             student= student)
+        #registration.attended = True
         registration.update(attended=True)
         serializer = EventSerializer(event)
         return Response(serializer.data)
@@ -130,10 +127,7 @@ class StudentViewSet(viewsets.ModelViewSet):
             event= event,
             student= student)
         serializer = EventSerializer(event)
-        if bookmarked:
-            return Response(serializer.data)
-        else:
-            return Response(bookmarked)
+        return Response(serializer.data)
 
     # # http://127.0.0.1:8000/students/bookmark/
     # @list_route(methods=['get'])
