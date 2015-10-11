@@ -4,6 +4,10 @@ from .models import Event
 from organizer.serializers import OrganizerSerializer
 
 class EventSerializer(serializers.ModelSerializer):
+
+    # def __init__(self, student=None):
+    #
+
     organizer = OrganizerSerializer
     class Meta:
         model = Event

@@ -146,7 +146,7 @@ class StudentViewSet(viewsets.ModelViewSet):
 
     # http://127.0.0.1:8000/students/3/bookmark/
     @detail_route(methods=['post'])
-    def bookmark(self, request, **kwargs):
+    def bookmark_event(self, request, **kwargs):
         student = request.user.student
         event = Event.objects.get(id = kwargs["pk"])
         bookmark, bookmarked = Bookmark.objects.get_or_create(
@@ -160,7 +160,7 @@ class StudentViewSet(viewsets.ModelViewSet):
 
     # http://127.0.0.1:8000/students/bookmark/
     @list_route(methods=['get'])
-    def bookmark(self, request, **kwargs):
+    def bookmarked_event(self, request, **kwargs):
         student = request.user.student
         bookmarks = Bookmark.objects.filter(student=student)
         events = []
