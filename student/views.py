@@ -26,7 +26,8 @@ def get_registered_events(student):
         events = []
         for registration in registrations:
             events.append(registration.event)
-        data = EventSerializer(events, many=True).data
+        from event.serializers import serialize_event_for_student
+        data = serialize_event_for_student(events, student, many=True) #EventSerializer(events, many=True).data
         return data
 
 def get_friends(student):
