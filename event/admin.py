@@ -4,7 +4,7 @@ from .models import Event
 
 class EventAdmin(admin.ModelAdmin):
     model = Event
-    list_display = ('id', 'name', 'description')
+    list_display = ('name', 'location', 'description')
     readonly_fields = ('participant_list_field',)
 
     def get_queryset(self, request):
