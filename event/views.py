@@ -28,7 +28,7 @@ class EventViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         queryset_list = list(queryset)
-        user = request.user.student
+        #user = request.user.student
         #preference = ('community',  'concert', 'career')
         preference = ('career', )
         resultset = []
@@ -56,14 +56,16 @@ class EventViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(resultset, many=True)
-        return Response(serializer.data)
+        #serializer = self.get_serializer(resultset, many=True)
+        #return Response(serializer.data)
+        data = serialize_event_for_student(resultset, request.user.student, many=True)
+        return Response(data)
 
     # GET http://127.0.0.1:8000/events/list_all/
     @list_route(methods=['get'])
     def list_all(self, request, *args, **kwargs):
         student = request.user.student
-        events = Event.objects.all()
+        events = Event.objects.all().order_by('start_time')
         data = serialize_event_for_student(student=student, event=events, many=True)
         return Response(data)
 
