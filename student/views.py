@@ -41,7 +41,8 @@ def get_friends(student):
 class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
-
+    
+    
     # provided: [GET].list(), [GET].retrieve(), [POST].create(), [PUT].update(), and [DELETE].destroy()
 
     # Registration (override .create())
@@ -83,6 +84,11 @@ class StudentViewSet(viewsets.ModelViewSet):
         data["registered_events"]=registered_event_data
         return Response(data, content_type="application/json")
 
+    
+    def retrieve(self, request, *args, **kwargs):
+        return self.me(request = request)
+    
+
     # http://127.0.0.1:8000/students/3/addfriend/
     @detail_route(methods=['post'])    # can be post as well
     def addfriend(self, request, *args, **kwargs):
@@ -98,11 +104,11 @@ class StudentViewSet(viewsets.ModelViewSet):
         return Response(friend.username)
 
     # http://127.0.0.1:8000/students/12/
-    @detail_route(methods=['get'])    # can be post as well
+    '''@detail_route(methods=['get'])    # can be post as well
     def retrieve(self, request, *args, **kwargs):
         student = User.objects.get(id = kwargs["pk"]).student
         serializer = StudentSerializer(student)
-        return Response(serializer.data, content_type="application/json")
+        return Response(serializer.data, content_type="application/json")'''
 
     # http://127.0.0.1:8000/students/3/register_event/
     @detail_route(methods=['post'])    # can be post as well
