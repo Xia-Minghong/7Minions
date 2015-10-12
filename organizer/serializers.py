@@ -6,5 +6,6 @@ class OrganizerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Organizer
-        fields = ('id', 'name', 'description', 'img_url')
+        fields = ('id', 'name', 'description', 'img_url', 'event_set')
+        depth = 1
 

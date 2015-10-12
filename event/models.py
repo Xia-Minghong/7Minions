@@ -2,6 +2,7 @@ from django.db import models
 from organizer.models import Organizer
 # Create your models here.
 
+
 class Event(models.Model):
     name = models.CharField(max_length=100)
     start_time = models.DateTimeField()
@@ -14,3 +15,14 @@ class Event(models.Model):
 
     def __str__(self):
        return self.name + ' : ' + self.location
+
+
+def registered_or_attended(event, student):
+    from student.models import Registration
+
+    #object does not exist when get() is called
+    registrations = Registration.objects.filter(student=student, event=event)
+    if registrations:
+        return (True, registrations[0].attended)
+    else:
+        return (False,False)

@@ -7,7 +7,6 @@ from .models import Feedback
 
 
 class FeedbackAdmin(admin.ModelAdmin):
-    actions = None
     list_display = ('event', 'content', 'rating')
     list_filter = ('event__name',)
     ordering = ['event__name']

@@ -70,7 +70,7 @@ class StudentViewSet(viewsets.ModelViewSet):
 
 
     # GET http://127.0.0.1:8000/students/me/
-    @list_route(methods=['get'])    # anybody is alloed
+    @list_route(methods=['get'])
     def me(self, request):
         student = request.user.student
         serializer = StudentSerializer(student)

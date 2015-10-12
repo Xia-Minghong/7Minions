@@ -1,13 +1,25 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets, permissions
 from .models import Event
-from .serializers import EventSerializer
+from .serializers import EventSerializer, serialize_event_for_student
 from rest_framework.decorators import list_route, detail_route
 from organizer.models import Organizer
-
+from rest_framework.response import Response
 
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
+
+
+def get_registered_participants(event):
+    from student.models import Registration
+    registrations = Registration.objects.filter(event=event)
+    participants = []
+    for registration in registrations:
+        participants.append(registration.student)
+    from student.serializers import StudentSerializer
+    data = StudentSerializer(participants, many=True).data
+    return data
+
 
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all().order_by('start_time')
@@ -43,9 +55,26 @@ class EventViewSet(viewsets.ModelViewSet):
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
-        
+
         serializer = self.get_serializer(resultset, many=True)
         return Response(serializer.data)
+
+    # GET http://127.0.0.1:8000/events/list_all/
+    @list_route(methods=['get'])
+    def list_all(self, request, *args, **kwargs):
+        student = request.user.student
+        events = Event.objects.all()
+        # serializer = EventSerializer(events,many=True,context={'test':'success'})
+        data = serialize_event_for_student(student=student, event=events, many=True)
+        return Response(data)
+
+    def retrieve(self, request, *args, **kwargs):
+        event = Event.objects.get(id=kwargs['pk'])
+        data = EventSerializer(event).data
+        registered_participants = get_registered_participants(event)
+        data["registered_participants"]=registered_participants
+        return Response(data, content_type="application/json")
+
     # Like an event
     # GET  http://127.0.0.1:8000/events/12/like
     @detail_route(methods=['get'], permission_classes=[permissions.IsAuthenticated])
