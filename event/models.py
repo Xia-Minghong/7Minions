@@ -1,5 +1,6 @@
 from django.db import models
 from organizer.models import Organizer
+
 # Create your models here.
 
 
@@ -12,6 +13,10 @@ class Event(models.Model):
     organizer = models.ForeignKey(Organizer, default=1)
     likes = models.IntegerField(default=0)
     img_url = models.CharField(max_length=200, default="", null=True)
+
+    def participant_list_field(self):
+        from .views import registered_participants
+        return registered_participants(self)
 
     def __str__(self):
        return self.name + ' : ' + self.location

@@ -9,6 +9,13 @@ from rest_framework.response import Response
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
+def registered_participants(event):
+    from student.models import Registration
+    registrations = Registration.objects.filter(event=event)
+    participants = []
+    for registration in registrations:
+        participants.append(registration.student)
+    return participants
 
 def get_registered_participants(event):
     from student.models import Registration
@@ -30,7 +37,7 @@ class EventViewSet(viewsets.ModelViewSet):
         queryset_list = list(queryset)
         #user = request.user.student
         #preference = ('community',  'concert', 'career')
-        preference = ('career', )
+        preference = ('career', 'community')
         resultset = []
         for event in queryset_list:
             cur_match = 0
