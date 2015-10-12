@@ -15,7 +15,7 @@ from .models import Student
 
 
 def get_bookmarked_events(student):
-        bookmarks = Bookmark.objects.filter(student=student)
+        bookmarks = Bookmark.objects.order_by('event__start_time').filter(student=student)
         events = []
         for bookmark in bookmarks:
             events.append(bookmark.event)
@@ -24,7 +24,7 @@ def get_bookmarked_events(student):
         return data
 
 def get_registered_events(student):
-        registrations = Registration.objects.filter(student=student)
+        registrations = Registration.objects.order_by('event__start_time').filter(student=student)
         events = []
         for registration in registrations:
             events.append(registration.event)
@@ -100,12 +100,8 @@ class StudentViewSet(viewsets.ModelViewSet):
         request.user.student.remove_friendship(friend.student)
         return Response(friend.username)
 
-    # http://127.0.0.1:8000/students/12/
-    @detail_route(methods=['get'])    # can be post as well
     def retrieve(self, request, *args, **kwargs):
-        student = User.objects.get(id = kwargs["pk"]).student
-        serializer = StudentSerializer(student)
-        return Response(serializer.data, content_type="application/json")
+        return self.me(request = request)
 
     # http://127.0.0.1:8000/students/3/register_event/
     @detail_route(methods=['post'])    # can be post as well
