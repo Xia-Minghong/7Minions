@@ -9,8 +9,8 @@ class Event(models.Model):
     end_time = models.DateTimeField()
     location = models.CharField(max_length=40)
     description = models.CharField(max_length=200)
-    organizer = models.ForeignKey(Organizer)
-    likes = models.IntegerField()
+    organizer = models.ForeignKey(Organizer, default=1)
+    likes = models.IntegerField(default=0)
     img_url = models.CharField(max_length=200, default="", null=True)
 
     def __str__(self):
