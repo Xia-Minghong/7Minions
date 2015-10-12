@@ -25,33 +25,43 @@ class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all().order_by('start_time')
     serializer_class = EventSerializer
 
-    # def list(self, request, *args, **kwargs):
-    #     queryset = self.filter_queryset(self.get_queryset())
-    #     queryset_list = list(queryset)
-    #     user = request.user.student
-    #     preference = ['community',  'concert', 'career']
-    #     resultset = []
-    #     for event in queryset_list:
-    #         if len(resultset) == 0:
-    #             resultset.insert(0, event)
-    #             continue
-    #         for item in resultset:
-    #             index = 0
-    #             if len(set(event.tag_set) & set(preference)) > len(set(item.tag_set) & set(preference)):
-    #                 resultset.insert(index, event)
-    #             index += 1
-    #     page = self.paginate_queryset(queryset)
-    #     if page is not None:
-    #         serializer = self.get_serializer(page, many=True)
-    #         return self.get_paginated_response(serializer.data)
-    #
-    #     #serializer = self.get_serializer(queryset, many=True)
-    #     serializer = self.get_serializer(resultset, many=True)
-    #     return Response(serializer.data)
-    # Like an event
-    # GET  http://127.0.0.1:8000/events/12/like
-
     def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        queryset_list = list(queryset)
+        user = request.user.student
+        #preference = ('community',  'concert', 'career')
+        preference = ('career', )
+        resultset = []
+        for event in queryset_list:
+            cur_match = 0
+            for event_tags in event.tag_set.values_list():
+                for pref in preference:
+                    if pref in event_tags:
+                        cur_match += 1
+            index = 0
+            for result in resultset:
+                pre_match = 0
+                for result_tags in result.tag_set.values_list():
+                    for pref in preference:
+                        if pref in result_tags:
+                            pre_match += 1
+                if cur_match > pre_match:
+                    resultset.insert(index, event)
+                    break;
+                index += 1
+            if index == len(resultset):
+                resultset.append(event)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(resultset, many=True)
+        return Response(serializer.data)
+
+    # GET http://127.0.0.1:8000/events/list_all/
+    @list_route(methods=['get'])
+    def list_all(self, request, *args, **kwargs):
         student = request.user.student
         events = Event.objects.all()
         # serializer = EventSerializer(events,many=True,context={'test':'success'})
@@ -65,6 +75,8 @@ class EventViewSet(viewsets.ModelViewSet):
         data["registered_participants"]=registered_participants
         return Response(data, content_type="application/json")
 
+    # Like an event
+    # GET  http://127.0.0.1:8000/events/12/like
     @detail_route(methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def like(self, request, pk = None):
         event = get_object_or_404(Event.objects.all(), pk = pk)
