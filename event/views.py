@@ -4,7 +4,7 @@ from .models import Event
 from .serializers import EventSerializer
 from rest_framework.decorators import list_route, detail_route
 from organizer.models import Organizer
-from rest_framework.response import Response
+
 
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
@@ -17,23 +17,33 @@ class EventViewSet(viewsets.ModelViewSet):
         queryset = self.filter_queryset(self.get_queryset())
         queryset_list = list(queryset)
         user = request.user.student
-        preference = ['community',  'concert', 'career']
+        #preference = ('community',  'concert', 'career')
+        preference = ('career', )
         resultset = []
         for event in queryset_list:
-            if len(resultset) == 0:
-                resultset.insert(0, event)
-                continue
-            for item in resultset:
-                index = 0
-                if len(set(event.tag_set) & set(preference)) > len(set(item.tag_set) & set(preference)):
+            cur_match = 0
+            for event_tags in event.tag_set.values_list():
+                for pref in preference:
+                    if pref in event_tags:
+                        cur_match += 1
+            index = 0
+            for result in resultset:
+                pre_match = 0
+                for result_tags in result.tag_set.values_list():
+                    for pref in preference:
+                        if pref in result_tags:
+                            pre_match += 1
+                if cur_match > pre_match:
                     resultset.insert(index, event)
+                    break;
                 index += 1
+            if index == len(resultset):
+                resultset.append(event)
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
-
-        #serializer = self.get_serializer(queryset, many=True)
+        
         serializer = self.get_serializer(resultset, many=True)
         return Response(serializer.data)
     # Like an event
