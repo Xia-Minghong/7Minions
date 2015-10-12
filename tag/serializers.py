@@ -6,5 +6,5 @@ class TagSerializer(serializers.ModelSerializer):
     event = EventSerializer
     class Meta:
         model = Tag
-        fields = ('tag', 'event')
+        # fields = ('tag', 'event')
         depth = 1
