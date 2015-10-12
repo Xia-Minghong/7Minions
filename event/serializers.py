@@ -11,7 +11,7 @@ class EventSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'start_time', 'end_time', 'location', 'description', 'likes', 'img_url', 'organizer', 'tag_set')
         depth = 1
 
-def serialize_event_for_student(event, student, many):
+def serialize_event_for_student(event, student, many=False):
     if many:
         list=[]
         for e in event:

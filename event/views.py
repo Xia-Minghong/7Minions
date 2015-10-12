@@ -64,13 +64,13 @@ class EventViewSet(viewsets.ModelViewSet):
     def list_all(self, request, *args, **kwargs):
         student = request.user.student
         events = Event.objects.all()
-        # serializer = EventSerializer(events,many=True,context={'test':'success'})
         data = serialize_event_for_student(student=student, event=events, many=True)
         return Response(data)
 
     def retrieve(self, request, *args, **kwargs):
+        student = request.user.student
         event = Event.objects.get(id=kwargs['pk'])
-        data = EventSerializer(event).data
+        data = serialize_event_for_student(student=student, event=event)
         registered_participants = get_registered_participants(event)
         data["registered_participants"]=registered_participants
         return Response(data, content_type="application/json")
