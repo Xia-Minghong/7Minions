@@ -18,7 +18,7 @@ class EventViewSet(viewsets.ModelViewSet):
         queryset_list = list(queryset)
         user = request.user.student
         #preference = ('community',  'concert', 'career')
-        preference = ('career', )
+        preference = ('career', 'community')
         resultset = []
         for event in queryset_list:
             cur_match = 0

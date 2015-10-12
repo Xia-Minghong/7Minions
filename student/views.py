@@ -13,9 +13,8 @@ from .serializers import StudentSerializer
 from event.serializers import EventSerializer
 from .models import Student
 
-
 def get_bookmarked_events(student):
-        bookmarks = Bookmark.objects.filter(student=student)
+        bookmarks = Bookmark.objects.order_by('event__start_time').filter(student=student)
         events = []
         for bookmark in bookmarks:
             events.append(bookmark.event)
@@ -23,7 +22,7 @@ def get_bookmarked_events(student):
         return data
 
 def get_registered_events(student):
-        registrations = Registration.objects.filter(student=student)
+        registrations = Registration.objects.order_by('event__start_time').filter(student=student)
         events = []
         for registration in registrations:
             events.append(registration.event)
