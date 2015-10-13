@@ -12,7 +12,7 @@ class Event(models.Model):
     description = models.CharField(max_length=200)
     organizer = models.ForeignKey(Organizer, default=1)
     likes = models.IntegerField(default=0)
-    img_url = models.CharField(max_length=200, default="", null=True)
+    img_url = models.CharField(max_length=200, default="http://s3.amazonaws.com/gametizeblog/images/2014/07/events-heavenly-header1.jpg", null=True)
 
     def participant_list_field(self):
         from .views import registered_participants
