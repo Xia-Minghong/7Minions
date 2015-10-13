@@ -76,6 +76,19 @@ class StudentViewSet(viewsets.ModelViewSet):
     @list_route(methods=['get'])
     def me(self, request):
         student = request.user.student
+        data = self.get_student_data(student)
+        # serializer = StudentSerializer(student)
+        # data = serializer.data
+        # friends = get_friends(student)
+        # bookmarked_event_data = get_bookmarked_events(student)
+        # registered_event_data = get_registered_events(student)
+        # data["friends"]=friends
+        # data["bookmarked_events"]=bookmarked_event_data
+        # data["registered_events"]=registered_event_data
+        return Response(data, content_type="application/json")
+
+    def get_student_data(self, student):
+        # student = Student.objects.get(id=id)
         serializer = StudentSerializer(student)
         data = serializer.data
         friends = get_friends(student)
@@ -84,7 +97,7 @@ class StudentViewSet(viewsets.ModelViewSet):
         data["friends"]=friends
         data["bookmarked_events"]=bookmarked_event_data
         data["registered_events"]=registered_event_data
-        return Response(data, content_type="application/json")
+        return data
 
     # http://127.0.0.1:8000/students/3/addfriend/
     @detail_route(methods=['post'])    # can be post as well
@@ -101,7 +114,8 @@ class StudentViewSet(viewsets.ModelViewSet):
         return Response(friend.username)
 
     def retrieve(self, request, *args, **kwargs):
-        return self.me(request = request)
+        student = User.objects.get(id=kwargs['pk']).student
+        return Response(self.get_student_data(student), content_type="application/json")
 
     # http://127.0.0.1:8000/students/3/register_event/
     @detail_route(methods=['post'])    # can be post as well
