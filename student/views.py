@@ -33,7 +33,7 @@ def get_registered_events(student):
         return data
 
 def get_friends(student):
-        friendships = Friendship.objects.filter(to_student=student)
+        friendships = Friendship.objects.filter(from_student=student)
         friends = []
         for friendship in friendships:
             friends.append(friendship.to_student)
