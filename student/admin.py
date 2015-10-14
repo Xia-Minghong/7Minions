@@ -54,6 +54,7 @@ class UserAdmin(UserAdmin):
 #admin.site.register(Student, StudentAdmin)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+admin.site.register(Student)
 admin.site.register(Friendship, FriendshipAdmin)
 admin.site.register(Registration, RegistrationAdmin)
 admin.site.register(Bookmark, BookmarkAdmin)
