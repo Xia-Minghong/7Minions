@@ -69,7 +69,7 @@ class EventViewSet(viewsets.ModelViewSet):
         return Response(data)
 
     # GET http://127.0.0.1:8000/events/list_all/
-    @list_route(methods=['get'])
+    @list_route(methods=['get'], permission_classes=[permissions.AllowAny])
     def list_all(self, request, *args, **kwargs):
         student = request.user.student
         events = Event.objects.all().order_by('start_time')
