@@ -69,11 +69,17 @@ class EventViewSet(viewsets.ModelViewSet):
         return Response(data)
 
     # GET http://127.0.0.1:8000/events/list_all/
-    @list_route(methods=['get'], permission_classes=[permissions.AllowAny])
+    @list_route(methods=['get'])
     def list_all(self, request, *args, **kwargs):
         student = request.user.student
         events = Event.objects.all().order_by('start_time')
         data = serialize_event_for_student(student=student, event=events, many=True)
+        return Response(data)
+
+    @list_route(methods=['get'], permission_classes=[permissions.AllowAny])
+    def test_all(self, request, *args, **kwargs):
+        events = Event.objects.all().order_by('start_time')
+        data = EventSerializer(events, many=True).data
         return Response(data)
 
     def retrieve(self, request, *args, **kwargs):
